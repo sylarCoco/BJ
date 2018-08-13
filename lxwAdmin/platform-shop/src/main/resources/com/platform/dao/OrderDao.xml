@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.OrderDao">
+
+    <resultMap type="com.platform.entity.OrderEntity" id="orderMap">
+        <result property="id" column="id"/>
+        <result property="orderSn" column="order_sn"/>
+		<result property="orderNo" column="order_no"/>
+        <result property="userId" column="user_id"/>
+        <result property="orderStatus" column="order_status"/>
+        <result property="shippingStatus" column="shipping_status"/>
+        <result property="payStatus" column="pay_status"/>
+        <result property="consignee" column="consignee"/>
+        <result property="country" column="country"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="district" column="district"/>
+        <result property="address" column="address"/>
+        <result property="mobile" column="mobile"/>
+        <result property="postscript" column="postscript"/>
+        <result property="shippingId" column="shipping_id"/>
+        <result property="shippingName" column="shipping_name"/>
+        <result property="payId" column="pay_id"/>
+        <result property="payName" column="pay_name"/>
+        <result property="shippingFee" column="shipping_fee"/>
+        <result property="actualPrice" column="actual_price"/>
+        <result property="integral" column="integral"/>
+        <result property="integralMoney" column="integral_money"/>
+        <result property="orderPrice" column="order_price"/>
+        <result property="goodsPrice" column="goods_price"/>
+        <result property="addTime" column="add_time"/>
+        <result property="confirmTime" column="confirm_time"/>
+        <result property="payTime" column="pay_time"/>
+        <result property="freightPrice" column="freight_price"/>
+        <result property="couponId" column="coupon_id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="couponPrice" column="coupon_price"/>
+        <result property="callbackStatus" column="callback_status"/>
+        <result property="shippingNo" column="shipping_no"/>
+        <result property="fullCutPrice" column="full_cut_price"/>
+        <result property="orderType" column="order_type"/>
+        <result property="bookbillId" column="bookbill_id"/>
+        <result property="username" column="username"/>
+        <result property="suplierType" column="suplier_type"/>
+        <result property="orderForm0" column="order_form0"/>
+        <result property="orderForm1" column="order_form1"/>
+        <result property="orderForm2" column="order_form2"/>
+        <result property="commodity" column="commodity"/>
+        <result property="unitPrice" column="unit_price"/>
+        <result property="nunitPrice" column="nunit_price"/>
+        <result property="generalBudget" column="general_budget"/>
+		<result property="billNumber" column="bill_number"/>
+		<result property="commodityName" column="commodity_name"/>
+		<result property="applyType" column="apply_type"/>
+		<result property="makeSure" column="make_sure"/>
+		<result property="dispose" column="dispose"/>
+		<result property="confirmStatus" column="confirm_status"/>
+		<result property="creatingTime" column="creating_time"/>
+		<result property="billingType" column="billing_type"/>
+		<association property="UserEntity" javaType="com.platform.entity.UserEntity">
+			<result property="id" column="id"/>
+			<result property="clientName" column="client_name"/>
+		</association>
+		<association property="SendingEntity" javaType="com.platform.entity.SendingEntity">
+			<result property="id" column="id"/>
+			<result property="modeDistribution" column="mode_distribution"/>
+			<result property="time" column="time"/>
+			<result property="person" column="person"/>
+			<result property="mobile" column="mobile"/>
+			<result property="orderSn" column="order_sn"/>
+		</association>
+		<association property="BillnewEntity" javaType="com.platform.entity.BillnewEntity">
+			<result property="cycleNo" column="cycle_no"/>
+			<result property="pid" column="pid"/>
+			<result property="applyTime" column="apply_time"/>
+			<result property="bargainTime" column="bargain_time"/>
+			<result property="orderSn" column="order_sn"/>
+			<result property="money" column="money"/>
+		</association>
+    </resultMap>
+	<select id="selecting" parameterType="String" resultType="Integer">
+		select
+		id
+		from nideshop_order
+		where bill_number = #{billNumber}
+	</select>
+
+	<select id="select" resultType="String">
+		select
+		order_sn
+		from nideshop_order
+		where id = #{id}
+	</select>
+
+	<select id="selectpos" resultType="String">
+		select
+		order_no
+		from nideshop_order
+		where id = #{id}
+	</select>
+
+	<select id="querys" resultType="com.platform.entity.OrderEntity">
+		select
+		id,
+		order_sn,
+		order_no,
+		consignee,
+		order_status,
+		shipping_status,
+		pay_status,
+		consignee,
+		country,
+		province,
+		city,
+		district,
+		address,
+		mobile,
+		postscript,
+		shipping_id,
+		shipping_name,
+		pay_id,
+		pay_name,
+		shipping_fee,
+		actual_price,
+		integral,
+		integral_money,
+		order_price,
+		goods_price,
+		add_time,
+		confirm_time,
+		pay_time,
+		freight_price,
+		coupon_id,
+		parent_id,
+		coupon_price,
+		callback_status,
+		shipping_no,
+		full_cut_price,
+		order_type,
+		bookbill_id,
+		username,
+		suplier_type,
+		unit_price,
+		nunit_price,
+		quantity,
+		apply_type,
+		apply_types,
+		confirm_status,
+        make_sure,
+        dispose,
+        creating_time,
+        billing_type
+     from nideshop_order
+		where id=#{id}
+	</select>
+
+
+
+	<select id="queryObject" resultType="com.platform.entity.OrderEntity">
+		select
+			t1.id,
+			t1.order_sn,
+			t1.order_no,
+			t1.user_id,
+			t1.order_status,
+			t1.shipping_status,
+			t1.pay_status,
+			t1.consignee,
+			t1.country,
+			t1.province,
+			t1.city,
+			t1.district,
+			t1.address,
+			t1.mobile,
+			t1.postscript,
+			t1.shipping_id,
+			t1.shipping_name,
+			t1.pay_id,
+			t1.pay_name,
+			t1.shipping_fee,
+			t1.actual_price,
+			t1.integral,
+			t1.integral_money,
+			t1.order_price,
+			t1.goods_price,
+			t1.add_time,
+			t1.confirm_time,
+			t1.pay_time,
+			t1.freight_price,
+			t1.coupon_id,
+			t1.parent_id,
+			t1.coupon_price,
+			t1.callback_status,
+			t1.shipping_no,
+			t1.full_cut_price,
+			t1.order_type,
+			t1.bookbill_id,
+			t1.username,
+			t1.suplier_type,
+			t1.commodity,
+			t1.unit_price,
+			t1.nunit_price,
+			t1.quantity,
+			t1.general_budget,
+			t1.apply_type,
+            t1.make_sure,
+            t1.confirm_status,
+            t1.dispose,
+            t1.creating_time,
+            t1.apply_types,
+            t1.billing_type,
+			t2.mode_distribution,
+			t2.time,
+			t2.person,
+			t2.mobiles,
+			t3.client_name
+		from nideshop_order t1,nideshop_sending t2,nideshop_user t3
+		where t1.order_no = t2.order_sn and t1.user_id=t3.id AND t1.id=#{t1.id}
+	</select>
+
+
+    <select id="queryObj" resultType="com.platform.entity.OrderEntity">
+        select
+         user_id
+        from nideshop_order
+        where id=#{id}
+    </select>
+
+
+	<select id="queryListOrder" resultType="com.platform.entity.OrderEntity">
+		select
+		t1.id,
+		t1.order_sn,
+		t1.order_no,
+		t1.user_id,
+		t1.order_status,
+		t1.shipping_status,
+		t1.pay_status,
+		t1.consignee,
+		t1.country,
+		t1.province,
+		t1.city,
+		t1.district,
+		t1.address,
+		t1.mobile,
+		t1.postscript,
+		t1.shipping_id,
+		t1.shipping_name,
+		t1.pay_id,
+		t1.pay_name,
+		t1.shipping_fee,
+		t1.actual_price,
+		t1.integral,
+		t1.integral_money,
+		t1.order_price,
+		t1.goods_price,
+		t1.add_time,
+		t1.confirm_time,
+		t1.pay_time,
+		t1.freight_price,
+		t1.coupon_id,
+		t1.parent_id,
+		t1.coupon_price,
+		t1.callback_status,
+		t1.shipping_no,
+		t1.full_cut_price,
+		t1.order_type,
+		t1.bookbill_id,
+		t1.username,
+		t1.suplier_type,
+		t1.commodity,
+		t1.unit_price,
+		t1.nunit_price,
+		t1.quantity,
+		t1.general_budget,
+		t1.apply_type,
+		t1.make_sure,
+		t1.dispose,
+		t1.confirm_status,
+		t1.creating_time,
+		t1.apply_types,
+		t1.billing_type,
+		from nideshop_order t1
+		WHERE t1.order_sn=#{t1.orderSn}
+	</select>
+
+	<select id="queryListing" resultType="com.platform.entity.OrderEntity">
+	  select
+		t1.id,
+		t1.order_sn,
+		t1.order_no,
+		t1.user_id,
+		t1.order_status,
+		t1.shipping_status,
+		t1.pay_status,
+		t1.consignee,
+		t1.country,
+		t1.province,
+		t1.city,
+		t1.district,
+		t1.address,
+		t1.mobile,
+		t1.postscript,
+		t1.shipping_id,
+		t1.shipping_name,
+		t1.pay_id,
+		t1.pay_name,
+		t1.shipping_fee,
+		t1.actual_price,
+		t1.integral,
+		t1.integral_money,
+		t1.order_price,
+		t1.goods_price,
+		t1.add_time,
+		t1.confirm_time,
+		t1.pay_time,
+		t1.freight_price,
+		t1.coupon_id,
+		t1.parent_id,
+		t1.coupon_price,
+		t1.callback_status,
+		t1.shipping_no,
+		t1.full_cut_price,
+		t1.order_type,
+		t1.bookbill_id,
+		t1.username,
+		t1.suplier_type,
+		t1.commodity,
+		t1.unit_price,
+		t1.nunit_price,
+		t1.quantity,
+		t1.general_budget,
+		t1.apply_type,
+		t1.make_sure,
+		t1.dispose,
+		t1.confirm_status,
+		t1.creating_time,
+		t1.apply_types,
+		t1.billing_type,
+		t2.mode_distribution,
+		t2.time,
+		t2.person,
+		t2.mobiles,
+		t3.client_name
+		from (nideshop_order t1 left OUTER  join nideshop_sending t2
+		on t1.order_no= t2.order_sn)   LEFT OUTER JOIN  nideshop_user t3 on t1.user_id=t3.id
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.OrderEntity">
+      select
+		t1.id,
+		t1.order_sn,
+		t1.order_no,
+		t1.user_id,
+		t1.order_status,
+		t1.shipping_status,
+		t1.pay_status,
+		t1.consignee,
+		t1.country,
+		t1.province,
+		t1.city,
+		t1.district,
+		t1.address,
+		t1.mobile,
+		t1.postscript,
+		t1.shipping_id,
+		t1.shipping_name,
+		t1.pay_id,
+		t1.pay_name,
+		t1.shipping_fee,
+		t1.actual_price,
+		t1.integral,
+		t1.integral_money,
+		t1.order_price,
+		t1.goods_price,
+		t1.add_time,
+		t1.confirm_time,
+		t1.pay_time,
+		t1.freight_price,
+		t1.coupon_id,
+		t1.parent_id,
+		t1.coupon_price,
+		t1.callback_status,
+		t1.shipping_no,
+		t1.full_cut_price,
+		t1.order_type,
+		t1.bookbill_id,
+		t1.username,
+		t1.suplier_type,
+		t1.commodity,
+		t1.unit_price,
+		t1.nunit_price,
+		t1.quantity,
+		t1.general_budget,
+		t1.apply_type,
+		t1.make_sure,
+		t1.dispose,
+		t1.confirm_status,
+		t1.creating_time,
+		t1.apply_types,
+		t1.billing_type,
+		t2.mode_distribution,
+		t2.time,
+		t2.person,
+		t2.mobiles,
+		t3.client_name
+		from ((nideshop_order t1 left OUTER  join nideshop_sending t2
+		on t1.order_no= t2.order_sn)   LEFT OUTER JOIN  nideshop_user t3 on t1.user_id=t3.id) LEFT OUTER JOIN
+        nideshop_billnew t4 ON t4.order_sn=t1.order_no
+		where t1.order_no !=""
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+        <if test="cycleNo != null">
+            AND  t4.cycle_no=#{cycleNo}
+        </if>
+        <if test="pid != null">
+            AND  t4.pid=#{pid}
+        </if>
+	</select>
+
+
+	<select id="queryListSos" resultType="com.platform.entity.OrderEntity">
+		select
+		t1.id,
+		t1.order_sn,
+		t1.order_no,
+		t1.user_id,
+		t1.order_status,
+		t1.shipping_status,
+		t1.pay_status,
+		t1.consignee,
+		t1.country,
+		t1.province,
+		t1.city,
+		t1.district,
+		t1.address,
+		t1.mobile,
+		t1.postscript,
+		t1.shipping_id,
+		t1.shipping_name,
+		t1.pay_id,
+		t1.pay_name,
+		t1.shipping_fee,
+		t1.add_time,
+		t1.confirm_time,
+		t1.pay_time,
+		t1.freight_price,
+		t1.coupon_id,
+		t1.parent_id,
+		t1.coupon_price,
+		t1.callback_status,
+		t1.shipping_no,
+		t1.full_cut_price,
+		t1.order_type,
+		t1.bookbill_id,
+		t1.username,
+		t1.suplier_type,
+		t1.commodity,
+		t1.unit_price,
+		t1.nunit_price,
+		t1.quantity,
+		t1.general_budget,
+		t1.apply_type,
+		t1.make_sure,
+		t1.dispose,
+		t1.confirm_status,
+		t1.creating_time,
+		t1.apply_types,
+		t1.billing_type,
+		t2.mode_distribution,
+		t2.time,
+		t2.person,
+		t2.mobiles,
+		t3.client_name,
+		t4.apply_time,
+		t4.bargain_time,
+		t4.cycle_no,
+		t4.pid,
+		t4.money
+		from ((nideshop_order t1 left OUTER  join nideshop_sending t2
+		on t1.order_no= t2.order_sn)   LEFT OUTER JOIN  nideshop_user t3 on t1.user_id=t3.id) LEFT OUTER JOIN
+		nideshop_billnew t4 ON t4.order_sn=t1.order_no
+		where t4.cycle_no=#{cycleNo} and t4.pid=#{pid}
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from nideshop_order
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.OrderEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into nideshop_order(
+			`order_sn`,
+			`order_no`,
+			`user_id`,
+			`order_status`,
+			`shipping_status`,
+			`pay_status`,
+			`consignee`,
+			`country`,
+			`billing_type`,
+			`province`,
+			`city`,
+			`district`,
+			`address`,
+			`mobile`,
+			`postscript`,
+			`shipping_id`,
+			`shipping_name`,
+			`pay_id`,
+			`pay_name`,
+			`shipping_fee`,
+			`actual_price`,
+			`integral`,
+			`integral_money`,
+			`order_price`,
+			`goods_price`,
+			`add_time`,
+			`confirm_time`,
+			`pay_time`,
+			`freight_price`,
+			`coupon_id`,
+			`parent_id`,
+			`coupon_price`,
+			`callback_status`,
+			`shipping_no`,
+			`full_cut_price`,
+			`order_type`,
+			`bookbill_id`,
+			`username`,
+			`suplier_type`,
+			`commodity`,
+			`unit_price`,
+			`nunit_price`,
+			`general_budget`,
+			`apply_type`,
+			`confirm_status`,
+			`make_sure`,
+			`dispose`,
+			`creating_time`,
+			`apply_types`)
+		values(
+			#{orderSn},
+			#{orderNo},
+			#{userId},
+			#{orderStatus},
+			#{shippingStatus},
+			#{payStatus},
+			#{consignee},
+			#{country},
+			#{billingType},
+			#{province},
+			#{city},
+			#{district},
+			#{address},
+			#{mobile},
+			#{postscript},
+			#{shippingId},
+			#{shippingName},
+			#{payId},
+			#{payName},
+			#{shippingFee},
+			#{actualPrice},
+			#{integral},
+			#{integralMoney},
+			#{orderPrice},
+			#{goodsPrice},
+			#{addTime},
+			#{confirmTime},
+			#{payTime},
+			#{freightPrice},
+			#{couponId},
+			#{parentId},
+			#{couponPrice},
+			#{callbackStatus},
+			#{shippingNo},
+			#{fullCutPrice},
+			#{orderType},
+			#{bookbillId},
+			#{username},
+			#{suplierType},
+			#{commodity},
+			#{unitPrice},
+			#{nunitPrice},
+			#{generalBudget},
+			#{applyType},
+			#{confirmStatus},
+			#{makeSure},
+			#{dispose},
+			#{creatingTime},
+			#{applyTypes})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.OrderEntity">
+		update nideshop_order 
+		<set>
+			<if test="orderSn != null">`order_sn` = #{orderSn}, </if>
+			<if test="orderNo != null">`order_no` = #{orderNo}, </if>
+			<if test="billNumber != null">`bill_number` = #{billNumber}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="orderStatus != null">`order_status` = #{orderStatus}, </if>
+			<if test="shippingStatus != null">`shipping_status` = #{shippingStatus}, </if>
+			<if test="payStatus != null">`pay_status` = #{payStatus}, </if>
+			<if test="consignee != null">`consignee` = #{consignee}, </if>
+			<if test="country != null">`country` = #{country}, </if>
+			<if test="province != null">`province` = #{province}, </if>
+			<if test="city != null">`city` = #{city}, </if>
+			<if test="district != null">`district` = #{district}, </if>
+			<if test="address != null">`address` = #{address}, </if>
+			<if test="mobile != null">`mobile` = #{mobile}, </if>
+			<if test="postscript != null">`postscript` = #{postscript}, </if>
+			<if test="shippingId != null">`shipping_id` = #{shippingId}, </if>
+			<if test="shippingName != null">`shipping_name` = #{shippingName}, </if>
+			<if test="payId != null">`pay_id` = #{payId}, </if>
+			<if test="payName != null">`pay_name` = #{payName}, </if>
+			<if test="shippingFee != null">`shipping_fee` = #{shippingFee}, </if>
+			<if test="actualPrice != null">`actual_price` = #{actualPrice}, </if>
+			<if test="integral != null">`integral` = #{integral}, </if>
+			<if test="integralMoney != null">`integral_money` = #{integralMoney}, </if>
+			<if test="orderPrice != null">`order_price` = #{orderPrice}, </if>
+			<if test="goodsPrice != null">`goods_price` = #{goodsPrice}, </if>
+			<if test="addTime != null">`add_time` = #{addTime}, </if>
+			<if test="confirmTime != null">`confirm_time` = #{confirmTime}, </if>
+			<if test="payTime != null">`pay_time` = #{payTime}, </if>
+			<if test="freightPrice != null">`freight_price` = #{freightPrice}, </if>
+			<if test="couponId != null">`coupon_id` = #{couponId}, </if>
+			<if test="parentId != null">`parent_id` = #{parentId}, </if>
+			<if test="billingType != null">`billing_type` = #{billingType}, </if>
+			<if test="couponPrice != null">`coupon_price` = #{couponPrice}, </if>
+			<if test="callbackStatus != null">`callback_status` = #{callbackStatus}, </if>
+			<if test="shippingNo != null">`shipping_no` = #{shippingNo}, </if>
+			<if test="fullCutPrice != null">`full_cut_price` = #{fullCutPrice}, </if>
+			<if test="orderType != null">`order_type` = #{orderType}, </if>
+			<if test="bookbillId != null">`bookbill_id` = #{bookbillId}, </if>
+			<if test="username != null">`username` = #{username}, </if>
+			<if test="suplierType != null">`suplier_type` = #{suplierType}, </if>
+			<if test="orderForm0 != null">`order_form0` = #{orderForm0}, </if>
+			<if test="orderForm1 != null">`order_form1` = #{orderForm1}, </if>
+			<if test="orderForm2 != null">`order_form2` = #{orderForm2}, </if>
+			<if test="commodity != null">`commodity` = #{commodity}, </if>
+			<if test="unitPrice != null">`unit_price` = #{unitPrice}, </if>
+			<if test="nunitPrice != null">`nunit_price` = #{nunitPrice}, </if>
+			<if test="generalBudget != null">`general_budget` = #{generalBudget}, </if>
+			<if test="applyType != null">`apply_type` = #{applyType}, </if>
+			<if test="makeSure != null">`make_sure` = #{makeSure}, </if>
+			<if test="dispose != null">`dispose` = #{dispose}, </if>
+			<if test="creatingTime != null">`creating_time` = #{creatingTime}, </if>
+			<if test="confirmStatus != null">`confirm_status` = #{confirmStatus}, </if>
+			<if test="applyTypes != null">`apply_types` = #{applyTypes}, </if>
+			<if test="quantity != null">`quantity` = #{quantity}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+
+
+
+	<update id="updates" parameterType="Integer">
+		update nideshop_order
+		<set>
+		 <if test="orderStatus != null">`order_status` = #{orderStatus}, </if>
+		  where id = #{id}
+		</set>
+	</update>
+	<delete id="delete">
+		delete from nideshop_order where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from nideshop_order where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

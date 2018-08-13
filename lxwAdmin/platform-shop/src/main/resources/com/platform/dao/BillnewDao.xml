@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.BillnewDao">
+    <resultMap type="com.platform.entity.BillnewEntity" id="billnewMap">
+        <result property="id" column="id"/>
+        <result property="applyTime" column="apply_time"/>
+        <result property="bargainTime" column="bargain_time"/>
+        <result property="accomplishTime" column="accomplish_time"/>
+        <result property="money" column="money"/>
+        <result property="orderSn" column="order_sn"/>
+        <result property="moneyType" column="money_type"/>
+        <result property="settlementStatus" column="settlement_status"/>
+        <result property="user" column="user"/>
+        <result property="orderStatus" column="order_status"/>
+        <result property="billNumber" column="bill_number"/>
+		<result property="expireTime" column="expire_time"/>
+		<result property="cycleNo" column="cycle_no"/>
+		<association property="UserEntity" javaType="com.platform.entity.UserEntity">
+			<result property="custnumber" column="custnumber"/>
+			<result property="clientName" column="client_name"/>
+		</association>
+        <association property="OrderEntity" column="com.platform.entity.OrderEntity">
+            <result property="orderNo" column="ordern_no"/>
+            <result property="time" column="time"/>
+            <result property="suplierType" column="suplier_type"/>
+        </association>
+    </resultMap>
+
+	<select id="selecting" parameterType="String" resultType="Integer">
+		select
+		id
+		from nideshop_billnew
+		where order_sn = #{orderSn}
+	</select>
+
+	<select id="queryListOrder"  resultType="com.platform.entity.BillnewEntity">
+		select
+		t1.apply_time,
+		t1.bargain_time,
+		t1.order_sn,
+		t3.time,
+		t2.suplier_type
+		from nideshop_billnew t1,nideshop_order t2,nideshop_sending t3
+		where t1.pid = #{pid} and t1.cycle_no=#{cycleNo} AND t1.order_sn=t2.order_no AND t1.order_sn=t3.order_sn
+	</select>
+
+
+
+	<select id="select" resultType="String">
+		select
+		order_sn
+		from nideshop_billnew
+		where id = #{id}
+	</select>
+
+	<select id="queryObject" resultType="com.platform.entity.BillnewEntity">
+	  select
+    	t1.id,
+		t1.pid,
+		t1.apply_time,
+		t1.expire_time,
+		t1.bargain_time,
+		t1.accomplish_time,
+		t1.money,
+		t1.order_sn,
+		t1.money_type,
+		t1.settlement_status,
+		t1.user,
+		t1.order_status,
+		t1.bill_number,
+		t1.cycle_no,
+		t2.client_name,
+		t2.custnumber
+		from nideshop_billnew t1 , nideshop_user t2
+		WHERE  t1.pid=t2.id AND t1.id=#{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.BillnewEntity">
+		select
+    	t1.id,
+		t1.pid,
+		t1.apply_time,
+		t1.expire_time,
+		t1.bargain_time,
+		t1.accomplish_time,
+		t1.money,
+		t1.order_sn,
+		t1.money_type,
+		t1.settlement_status,
+		t1.user,
+		t1.order_status,
+		t1.bill_number,
+		t1.cycle_no,
+		t2.client_name,
+		t2.custnumber
+		from nideshop_billnew t1 , nideshop_user t2
+		WHERE  t1.pid=t2.id
+		<if test="orderSn != null and orderSn.trim() != ''">
+			AND order_sn LIKE concat('%',#{orderSn},'%')
+		</if>
+		<if test="orderStatus != null and orderStatus.trim() != ''">
+			AND order_Status LIKE concat('%',#{orderStatus},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="querying" resultType="com.platform.entity.BillnewEntity">
+        select
+         pid,
+         cycle_no,
+         sum(money) money
+        from nideshop_billnew t1
+         GROUP BY cycle_no,pid
+    </select>
+
+
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from nideshop_billnew
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.BillnewEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into nideshop_billnew(
+			`apply_time`,
+			`expire_time`,
+			`pid`,
+			`bargain_time`,
+			`accomplish_time`,
+			`money`,
+			`order_sn`,
+			`money_type`,
+			`settlement_status`,
+			`user`,
+			`cycle_no`,
+			`order_status`,
+			`bill_number`)
+		values(
+			#{applyTime},
+			#{expireTime},
+			#{pid},
+			#{bargainTime},
+			#{accomplishTime},
+			#{money},
+			#{orderSn},
+			#{moneyType},
+			#{settlementStatus},
+			#{user},
+			#{cycleNo},
+			#{orderStatus},
+			#{billNumber})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.BillnewEntity">
+		update nideshop_billnew 
+		<set>
+			<if test="applyTime != null">`apply_time` = #{applyTime}, </if>
+			<if test="expireTime !=null"> `expire_time`=#{expireTime},</if>
+			<if test="bargainTime != null">`bargain_time` = #{bargainTime}, </if>
+			<if test="accomplishTime != null">`accomplish_time` = #{accomplishTime}, </if>
+			<if test="money != null">`money` = #{money}, </if>
+			<if test="orderSn != null">`order_sn` = #{orderSn}, </if>
+			<if test="moneyType != null">`money_type` = #{moneyType}, </if>
+			<if test="settlementStatus != null">`settlement_status` = #{settlementStatus}, </if>
+			<if test="user != null">`user` = #{user}, </if>
+			<if test="cycleNo != null">`cycle_no` = #{cycleNo}, </if>
+			<if test="orderStatus != null">`order_status` = #{orderStatus}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from nideshop_billnew where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from nideshop_billnew where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

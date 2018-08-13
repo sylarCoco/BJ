@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ProviderDao">
+	<resultMap type="com.platform.entity.Provider" id="providerMap">
+        <result property="id" column="id"/>
+		<result property="brindId" column="brand_id"/>
+        <result property="username" column="username"/>
+        <result property="abbreviation" column="abbreviation"/>
+        <result property="supplyStatus" column="supply_status"/>
+        <result property="stateCooperation" column="state_cooperation"/>
+        <result property="creator" column="creator"/>
+        <result property="lastCreator" column="last_creator"/>
+        <result property="province" column="province"/>
+        <result property="town" column="town"/>
+        <result property="region" column="region"/>
+        <result property="enterpriseServiceArea" column="enterprise_serviceArea"/>
+        <result property="serviceCategory" column="service_category"/>
+        <result property="scopeOperation" column="scope_operation"/>
+        <result property="businessQualification" column="business_qualification"/>
+        <result property="area" column="area"/>
+        <result property="supplyAddress" column="supply_address"/>
+        <result property="person" column="person"/>
+        <result property="email" column="email"/>
+        <result property="contact" column="contact"/>
+        <association property="openingBank" javaType="com.platform.entity.OpeningBank">
+            <result property="id" column="id"/>
+            <result property="brandId" column="brand_id"/>
+            <result property="openingBank" column="opening_bank"/>
+            <result property="accountName" column="account_name"/>
+            <result property="accountNumber" column="account_number"/>
+        </association>
+    </resultMap>
+
+
+    <select id="queryObject" resultType="com.platform.entity.Provider">
+
+SELECT
+    t1.id,
+    t1.brand_id,
+    t1.supply_status,
+    t1.state_cooperation,
+    t1.creator,
+    t1.last_creator,
+	t1.username,
+	t1.abbreviation,
+	t1.enterprise_serviceArea,
+	t1.service_category,
+	t1.scope_operation,
+	t1.business_qualification,
+	t1.area,
+	t1.supply_address,
+	t1.person,
+	t1.email,
+	t1.contact,
+	t1.address,
+	 t1.province,
+        t1.town,
+        t1.region,
+	t2.openging_bank,
+	t2.account_name,
+	t2.account_number
+FROM
+	nideshop_provider t1,
+	nideshop_bankCard t2
+WHERE
+	t1.brand_id = t2.brand_id
+    AND t1.id = #{t1.id}
+	</select>
+
+
+    <select id="queryName" resultType="com.platform.entity.Provider">
+
+        SELECT
+        *
+        FROM
+        nideshop_provider
+    </select>
+
+
+    <select id="queryList" resultType="com.platform.entity.Provider">
+
+        SELECT
+        t1.id,
+        t1.username,
+        t1.brand_id,
+        t1.supply_status,
+        t1.state_cooperation,
+        t1.creator,
+        t1.last_creator,
+        t1.abbreviation,
+        t1.enterprise_serviceArea,
+        t1.service_category,
+        t1.scope_operation,
+        t1.business_qualification,
+        t1.area,
+        t1.supply_address,
+        t1.person,
+        t1.email,
+        t1.contact,
+        t1.address,
+        t1.province,
+        t1.town,
+        t1.region,
+        t2.openging_bank,
+        t2.account_name,
+        t2.account_number
+        FROM
+        nideshop_provider t1,
+        nideshop_bankCard t2
+        WHERE
+        t1.brand_id = t2.brand_id
+        <if test="username != null and username.trim() != ''">
+            and t1.username like concat('%',#{username},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by t1.id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+		select count(*) from nideshop_provider
+		WHERE 1=1
+        <if test="username != null and username.trim() != ''">
+            AND name LIKE concat('%',#{username},'%')
+        </if>
+	</select>
+
+
+
+
+
+    <insert id="save" parameterType="com.platform.entity.Provider" useGeneratedKeys="true" keyProperty="id">
+		insert into nideshop_provider(
+		    `supply_status`,
+            `state_cooperation`,
+            `creator`,
+            `last_creator`,
+			`brand_id`,
+			`username`,
+			`abbreviation`,
+			`enterprise_serviceArea`,
+			`service_category`,
+			`scope_operation`,
+			`business_qualification`,
+			`area`,
+			`supply_address`,
+			`person`,
+			`email`,
+			`contact`,
+			`province`,
+			`town`,
+			`region`,
+			`address`)
+		values(
+		    #{supplyStatus},
+            #{stateCooperation},
+            #{creator},
+            #{lastCreator},
+			#{brandId},
+			#{username},
+			#{abbreviation},
+			#{enterpriseServiceArea},
+			#{serviceCategory},
+			#{scopeOperation},
+			#{businessQualification},
+			#{area},
+			#{supplyAddress},
+			#{person},
+			#{email},
+			#{contact},
+			#{province},
+			#{town},
+			#{region},
+			#{address}
+			)
+
+	</insert>
+
+    <update id="update" parameterType="com.platform.entity.Provider">
+        update nideshop_provider
+        <set>
+
+            <if test="supplyStatus != null">`supply_status` = #{supplyStatus},</if>
+            <if test="stateCooperation != null">`state_cooperation` = #{stateCooperation},</if>
+            <if test="creator != null">`creator` = #{creator},</if>
+            <if test="lastCreator != null">`last_creator` = #{lastCreator},</if>
+            <if test="username != null">`username` = #{username},</if>
+            <if test="abbreviation != null">`abbreviation` = #{abbreviation},</if>
+            <if test="enterpriseServiceArea != null">`enterprise_serviceArea` = #{enterpriseServiceArea},</if>
+            <if test="serviceCategory != null">`service_category` = #{serviceCategory},</if>
+            <if test="scopeOperation != null">`scope_operation` = #{scopeOperation},</if>
+            <if test="businessQualification != null">`business_qualification`= #{businessQualification},</if>
+            <if test="area != null">`area` = #{area},</if>
+            <if test=" supplyAddress != null">`supply_address` = #{supplyAddress},</if>
+            <if test="person != null">`person` = #{person},</if>
+            <if test="email != null">`email` = #{email},</if>
+            <if test="address != null">`address` = #{address},</if>
+            <if test="province != null">`province` = #{province},</if>
+            <if test="town != null">`town` = #{town},</if>
+            <if test="region != null">`region` = #{region},</if>
+            <if test=" contact != null">`contact` = #{contact}</if>
+        </set>
+        where id = #{id};
+    </update>
+
+    <delete id="delete">
+		delete  from nideshop_provider WHERE id = #{id};
+	</delete>
+
+    <select id="select" parameterType="Integer" resultType="String">
+        SELECT brand_id FROM nideshop_provider WHERE id=#{id};
+    </select>
+
+    <delete id="deleteBatch">
+        delete  from nideshop_provider where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
