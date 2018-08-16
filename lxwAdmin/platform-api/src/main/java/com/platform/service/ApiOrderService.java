@@ -147,7 +147,7 @@ public class ApiOrderService {
         orderInfo.setFull_cut_price(fullCutCouponDec);
         orderInfo.setCoupon_id(couponId);
         orderInfo.setCoupon_price(couponPrice);
-        orderInfo.setAdd_time(new Date().toString());
+        orderInfo.setAdd_time(new Date());
         orderInfo.setGoods_price(goodsTotalPrice);
         orderInfo.setOrder_price(orderTotalPrice);
         orderInfo.setActual_price(actualPrice);

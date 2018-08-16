@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.OpeningBankDao">
+	<resultMap type="com.platform.entity.OpeningBank" id="OpeningBankMap">
+        <result property="id" column="id"/>
+        <result property="brandId" column="brand_id"/>
+        <result property="openingBank" column="opening_bank"/>
+        <result property="accountName" column="account_name"/>
+        <result property="accountNumber" column="account_number"/>
+    </resultMap>
+    <insert id="save" parameterType="com.platform.entity.OpeningBank" >
+		insert into nideshop_bankCard(
+			`brand_id`,
+			`openging_bank`,
+			`account_name`,
+			`account_number`)
+		values(
+			#{brandId},
+			#{openingBank},
+			#{accountName},
+			#{accountNumber})
+	</insert>
+
+	<update id="update" parameterType="com.platform.entity.OpeningBank">
+		update nideshop_bankCard
+		<set>
+			<if test="opengingBank!= null">`openging_bank`=#{opengingBank},</if>
+			<if test="accountName!= null">`account_name`= #{accountName},</if>
+			<if test="accountNumber!= null">`account_number`= #{accountNumber}</if>
+		</set>
+		where brand_id = #{brandId};
+	</update>
+
+	<delete id="delete">
+		delete  from nideshop_bankCard where brand_id=#{brandId};
+    </delete>
+
+</mapper>

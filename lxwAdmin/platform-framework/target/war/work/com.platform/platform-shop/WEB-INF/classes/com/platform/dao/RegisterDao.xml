@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.RegisterDao">
+
+    <resultMap type="com.platform.entity.RegisterEntity" id="registerMap">
+        <result property="id" column="id"/>
+        <result property="peopleName" column="people_name"/>
+        <result property="contactMobile" column="contact_mobile"/>
+        <result property="mangeName" column="mange_name"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.RegisterEntity">
+		select
+			`id`,
+			`people_name`,
+			`contact_mobile`,
+			`mange_name`
+		from nideshop_register
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.RegisterEntity">
+		select
+    		`id`,
+    		`people_name`,
+    		`contact_mobile`,
+    		`mange_name`
+		from nideshop_register
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from nideshop_register
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.RegisterEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into nideshop_register(
+			`people_name`,
+			`contact_mobile`,
+			`mange_name`)
+		values(
+			#{peopleName},
+			#{contactMobile},
+			#{mangeName})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.RegisterEntity">
+		update nideshop_register 
+		<set>
+			<if test="peopleName != null">`people_name` = #{peopleName}, </if>
+			<if test="contactMobile != null">`contact_mobile` = #{contactMobile}, </if>
+			<if test="mangeName != null">`mange_name` = #{mangeName}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from nideshop_register where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from nideshop_register where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<delete id="deleteing">
+		delete from nideshop_register where nideshop_register.contact_mobile =#{contactMobile}
+	</delete>
+
+
+</mapper>

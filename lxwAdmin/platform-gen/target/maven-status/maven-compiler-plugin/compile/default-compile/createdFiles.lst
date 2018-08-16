@@ -1,0 +1,9 @@
+com\platform\entity\ResultMap.class
+com\platform\entity\ColumnEntity.class
+com\platform\service\SysGeneratorService.class
+com\platform\entity\TableEntity.class
+com\platform\dao\SysOracleGeneratorDao.class
+com\platform\dao\SysGeneratorDao.class
+com\platform\controller\SysGeneratorController.class
+com\platform\utils\GenUtils.class
+com\platform\service\impl\SysGeneratorServiceImpl.class

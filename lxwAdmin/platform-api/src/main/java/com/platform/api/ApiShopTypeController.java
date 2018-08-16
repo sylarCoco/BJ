@@ -56,7 +56,7 @@ public class ApiShopTypeController extends ApiBaseAction {
         orderInfo.setIntegral(Integer.valueOf(shopTypeVo.getIntegral()));
         orderInfo.setGoods_price(orderTotalPrice);
         orderInfo.setOrder_status(0);
-        orderInfo.setAdd_time(new Date().toString());
+        orderInfo.setAdd_time(new Date());
         // 待付款
         orderInfo.setOrder_status(0);
         orderInfo.setShipping_status(0);

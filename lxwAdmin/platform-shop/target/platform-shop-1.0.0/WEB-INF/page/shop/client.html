@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    #parse("sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+        <Row :gutter="16">
+            <i-col span="4">
+                <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
+            </i-col>
+            <i-button @click="query">查询</i-button>
+			#if($shiro.hasPermission("client:save"))
+            <i-button type="info" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</i-button>
+			#end
+			#if($shiro.hasPermission("client:update"))
+            <i-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</i-button>
+			#end
+			#if($shiro.hasPermission("client:delete"))
+            <i-button type="error" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
+			#end
+        </Row>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+
+    <Card v-show="!showList">
+        <p slot="title">{{title}}</p>
+		<i-form ref="formValidate" :model="client" :rules="ruleValidate" :label-width="80">
+            <Form-item label="客户名称123" prop="clientName">
+                <i-input v-model="client.clientName" placeholder="客户名称"/>
+            </Form-item>
+            <Form-item label="结算方式" prop="clearingForm">
+                <i-input v-model="client.clearingForm" placeholder="结算方式"/>
+            </Form-item>
+            <Form-item label="所属地区" prop="area">
+                <i-input v-model="client.area" placeholder="所属地区"/>
+            </Form-item>
+            <Form-item label="城市" prop="city">
+                <i-input v-model="client.city" placeholder="城市"/>
+            </Form-item>
+            <Form-item label="客户地址" prop="address">
+                <i-input v-model="client.address" placeholder="客户地址"/>
+            </Form-item>
+            <Form-item label="业务负责人" prop="principal">
+                <i-input v-model="client.principal" placeholder="业务负责人"/>
+            </Form-item>
+            <Form-item label="业务负责人邮箱" prop="email">
+                <i-input v-model="client.email" placeholder="业务负责人邮箱"/>
+            </Form-item>
+            <Form-item label="业务负责人电话" prop="mobile">
+                <i-input v-model="client.mobile" placeholder="业务负责人电话"/>
+            </Form-item>
+            <Form-item label="财务负责人" prop="financePrincipal">
+                <i-input v-model="client.financePrincipal" placeholder="财务负责人"/>
+            </Form-item>
+            <Form-item label="邮箱" prop="financeEmail">
+                <i-input v-model="client.financeEmail" placeholder="邮箱"/>
+            </Form-item>
+            <Form-item label="电话" prop="financeMobile">
+                <i-input v-model="client.financeMobile" placeholder="电话"/>
+            </Form-item>
+            <Form-item>
+                <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
+                <i-button type="warning" @click="reload" style="margin-left: 8px"/>返回</i-button>
+                <i-button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">重置</i-button>
+            </Form-item>
+        </i-form>
+	</Card>
+</div>
+
+<script src="${rc.contextPath}/js/shop/client.js?_${date.systemTime}"></script>
+</body>
+</html>

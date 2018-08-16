@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.PaymentDao">
+
+    <resultMap type="com.platform.entity.PaymentEntity" id="paymentMap">
+        <result property="id" column="id"/>
+        <result property="payment" column="payment"/>
+        <result property="callbackTime" column="callback_time"/>
+        <result property="money" column="money"/>
+        <result property="orderSn" column="order_sn"/>
+        <result property="moneyType" column="money_type"/>
+        <result property="link" column="link"/>
+        <result property="user" column="user"/>
+        <result property="billNumber" column="bill_number"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.PaymentEntity">
+		select
+			`id`,
+			`payment`,
+			`callback_time`,
+			`money`,
+			`order_sn`,
+			`money_type`,
+			`link`,
+			`user`,
+			`bill_number`
+		from nideshop_payment
+		where id = #{id}
+	</select>
+
+
+
+
+	<select id="queryList" resultType="com.platform.entity.PaymentEntity">
+		select
+    		`id`,
+    		`payment`,
+    		`callback_time`,
+    		`money`,
+    		`order_sn`,
+    		`money_type`,
+    		`link`,
+    		`user`,
+    		`bill_number`
+		from nideshop_payment
+		WHERE 1=1
+		<if test="user != null and user.trim() != ''">
+			AND user LIKE concat('%',#{user},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from nideshop_payment
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.PaymentEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into nideshop_payment(
+			`payment`,
+			`callback_time`,
+			`money`,
+			`order_sn`,
+			`money_type`,
+			`link`,
+			`user`,
+			`bill_number`)
+		values(
+			#{payment},
+			#{callbackTime},
+			#{money},
+			#{orderSn},
+			#{moneyType},
+			#{link},
+			#{user},
+			#{billNumber})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.PaymentEntity">
+		update nideshop_payment 
+		<set>
+			<if test="payment != null">`payment` = #{payment}, </if>
+			<if test="callbackTime != null">`callback_time` = #{callbackTime}, </if>
+			<if test="money != null">`money` = #{money}, </if>
+			<if test="orderSn != null">`order_sn` = #{orderSn}, </if>
+			<if test="moneyType != null">`money_type` = #{moneyType}, </if>
+			<if test="link != null">`link` = #{link}, </if>
+			<if test="user != null">`user` = #{user}, </if>
+			<if test="billNumber != null">`bill_number` = #{billNumber}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from nideshop_payment where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from nideshop_payment where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

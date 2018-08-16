@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.DataformDao">
+
+    <resultMap type="com.platform.entity.DataformEntity" id="dataformMap">
+        <result property="id" column="id"/>
+        <result property="cycleno" column="cycleNo"/>
+        <result property="cyclename" column="cycleName"/>
+        <result property="cycletype" column="cycleType"/>
+        <result property="mintime" column="minTime"/>
+        <result property="maxtime" column="maxTime"/>
+        <result property="dueDate" column="due_date"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.DataformEntity">
+		select
+			`id`,
+			`cycleNo`,
+			`cycleName`,
+			`cycleType`,
+			`minTime`,
+			`maxTime`,
+			`due_date`
+		from nideshop_dataform
+		where cycleNo = #{cycleNo}
+	</select>
+
+	<select id="queryWeek" resultType="com.platform.entity.DataformEntity">
+		select
+		`id`,
+		`cycleNo`,
+		`cycleName`,
+		`cycleType`,
+		`minTime`,
+		`maxTime`,
+		`due_date`
+		from nideshop_dataform
+		where
+		#{date}
+		between
+		minTime
+		and
+		maxTime
+		and
+		cycleType=#{cycleType};
+	</select>
+
+
+
+
+
+	<select id="queryList" resultType="com.platform.entity.DataformEntity">
+		select
+    		`id`,
+    		`cycleNo`,
+    		`cycleName`,
+    		`cycleType`,
+    		`minTime`,
+    		`maxTime`,
+    		`due_date`
+		from nideshop_dataform
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from nideshop_dataform
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.DataformEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into nideshop_dataform(
+			`cycleNo`,
+			`cycleName`,
+			`cycleType`,
+			`minTime`,
+			`maxTime`,
+			`due_date`)
+		values(
+			#{cycleno},
+			#{cyclename},
+			#{cycletype},
+			#{mintime},
+			#{maxtime},
+			#{dueDate})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.DataformEntity">
+		update nideshop_dataform 
+		<set>
+			<if test="cycleno != null">`cycleNo` = #{cycleno}, </if>
+			<if test="cyclename != null">`cycleName` = #{cyclename}, </if>
+			<if test="cycletype != null">`cycleType` = #{cycletype}, </if>
+			<if test="mintime != null">`minTime` = #{mintime}, </if>
+			<if test="maxtime != null">`maxTime` = #{maxtime}, </if>
+			<if test="dueDate != null">`due_date` = #{dueDate}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from nideshop_dataform where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from nideshop_dataform where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

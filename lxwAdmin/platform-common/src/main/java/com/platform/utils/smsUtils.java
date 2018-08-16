@@ -10,7 +10,7 @@ import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 
 public class smsUtils {
-        public static int sendMsg(String name,String code,String password) throws ClientException {//拿到手机号
+        public static int sendMsg(String code,String name,String password) throws ClientException {//拿到手机号
             //调用阿里通信接口
             //设置超时时间-可自行调整
             System.setProperty("sun.net.client.defaultConnectTimeout", "10000");

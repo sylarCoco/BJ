@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>账单详情</title>
+    #parse("sys/header.html")
+</head>
+<body class="gray-bg">
+<div id="rrapp" v-cloak class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox-content p-xl">
+                <div class="row">
+
+                    <div class="col-sm-6 text-left">
+                        <h3 class="text-navy">账单编号:{{majorbillnew.billNumber}}</h3>
+                        <br>
+                        <h4>客户编号:{{majorbillnew.custnumber}}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;客户名称:{{majorbillnew.clientName}}</h4>
+                        <h4>开始日期:{{majorbillnew.bargainTime}}&nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;结束日期:{{majorbillnew.accomplishTime}}</h4>
+                        <h4>到期日:{{majorbillnew.expireTime}}</h4>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <br><br>
+                        <h3 class="text-navy">账单金额:{{majorbillnew.money}}</h3>
+                    </div>
+                </div>
+                <div class="table-responsive m-t">
+                <table id="jqGrid"></table>
+                <div id="jqGridPager"></div>
+                </div>
+                <div style="float: right;">
+                    <i-button v-if="showBtn" class="btn btn-warning dim" @click="print"><i class="fa fa-print"></i>打印
+                    </i-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        let orderId = getQueryString("orderId");
+        let url = '../order/listSos';
+        if(orderId){
+            url+='?orderId='+orderId;
+        }
+
+        $("#jqGrid").jqGrid({
+            url: url,
+            datatype: "json",
+            colModel: [
+                {label: 'id', name: 'id', index: 'id', key: true, hidden: true},
+                {label: '订单编号', name: 'orderNo', index: 'order_no', width: 100},
+                {label: '申请时间', name: 'applyTime', index: 'apply_time', width: 100},
+                {label: '成交时间', name: 'confirmTime', index: 'confirm_time', width: 100},
+                {label: '完成时间', name: 'creatingTime', index: 'creating_time', width: 100},
+                {label: '交易金额', name: 'money', index: 'money', width: 80},
+                {
+                    label: '计费类型', name: 'applyTypes', index: 'apply_types', width: 80, formatter: function (value) {
+                        if (value == '1') {
+                            return '采购';
+                        }else if(value=="2") {
+                            return '租赁';
+                        }else if(value==3){
+                            return '维修';
+                        }
+                        return value;
+                    }
+                },
+                {
+                    label: '是否结算', name: 'orderStatus', index: 'order_status', width: 80, formatter: function (value) {
+                        if (value == '101') {
+                            return '订单已取消';
+                        } else if (value == '102') {
+                            return '订单已删除';
+                        } else if (value == '201') {
+                            return '订单已付款';
+                        } else if (value == '300') {
+                            return '订单已发货';
+                        } else if (value == '301') {
+                            return '用户确认收货';
+                        } else if (value == '401') {
+                            return '退款';
+                        } else if (value == '402') {
+                            return '完成';
+                        }
+                        else if (value == '403') {
+                            return '未结算';
+                        }
+                        return value;
+                    }
+                },
+            ],
+            viewrecords: true,
+            height: 385,
+            rowNum: 10,
+            rowList: [10, 30, 50],
+            rownumbers: true,
+            rownumWidth: 25,
+            autowidth: true,
+            multiselect: true,
+            pager: "#jqGridPager",
+            jsonReader: {
+                root: "page.list",
+                page: "page.currPage",
+                total: "page.totalPage",
+                records: "page.totalCount"
+            },
+            prmNames: {
+                page: "page",
+                rows: "limit",
+                order: "order"
+            },
+            gridComplete: function () {
+                $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
+            }
+        });
+    });
+    let orderId = getQueryString("orderId");
+    var vm = new Vue({
+        el: '#rrapp',
+        data: {
+            showBtn: true,
+            order: {},
+            majorbillnew:{},
+            billnew:{},
+            orderGoods: {},
+            sumRetailPrice: 0,
+            nowDate: transDate(new Date())
+        },
+        methods: {
+            print: function () {
+                vm.showBtn = false;
+                window.print();
+            }
+        },
+        created: function () {
+            $.get("../majorbillnew/info/" + orderId, function (r) {
+                vm.majorbillnew = r.majorbillnew;
+            });
+        },
+    });
+</script>
+</body>
+</html>

@@ -77,7 +77,7 @@ public class OrderVo implements Serializable {
     //商品总价
     private BigDecimal goods_price;
     //新增时间
-    private String add_time;
+    private Date add_time;
     //确认时间
     private Date confirm_time;
     //付款时间
@@ -319,11 +319,11 @@ public class OrderVo implements Serializable {
     }
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    public String getAdd_time() {
+    public Date getAdd_time() {
         return add_time;
     }
 
-    public void setAdd_time(String add_time) {
+    public void setAdd_time(Date add_time) {
         this.add_time = add_time;
     }
 

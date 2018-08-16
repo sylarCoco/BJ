@@ -1,0 +1,3 @@
+com\platform\common\baseCommon.class
+com\platform\oss\baseOss.class
+com\platform\oss\QcloudCloudStorageServiceTest.class

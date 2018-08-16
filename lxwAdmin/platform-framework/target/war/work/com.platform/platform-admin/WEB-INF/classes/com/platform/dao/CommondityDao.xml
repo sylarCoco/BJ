@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.CommondityDao">
+
+    <resultMap type="com.platform.entity.CommondityEntity" id="commondityMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="classing" column="classing"/>
+        <result property="classing1" column="classing1"/>
+        <result property="classing2" column="classing2"/>
+        <result property="frontdesc" column="frontdesc"/>
+        <result property="model" column="model"/>
+        <result property="specification" column="specification"/>
+        <result property="price" column="price"/>
+        <result property="taxprice" column="taxprice"/>
+        <result property="username" column="username"/>
+        <result property="imgurl" column="imgurl"/>
+        <result property="goodstyle" column="goodstyle"/>
+    </resultMap>
+
+    <select id="queryObject" resultType="com.platform.entity.CommondityEntity">
+        select
+        `id`,
+        `name`,
+        `classing`,
+        `classing1`,
+        `classing2`,
+        `frontdesc`,
+        `model`,
+        `specification`,
+        `price`,
+        `taxprice`,
+        `username`,
+        `imgurl`,
+         `goodstyle`
+        from nideshop_commondity
+        where id = #{id}
+    </select>
+
+    <select id="queryList" resultType="com.platform.entity.CommondityEntity">
+        select
+        `id`,
+        `name`,
+        `classing`,
+        `classing1`,
+        `classing2`,
+        `frontdesc`,
+        `model`,
+        `specification`,
+        `price`,
+        `taxprice`,
+        `username`,
+        `imgurl`,
+        `goodstyle`
+        from nideshop_commondity
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id ASC
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from nideshop_commondity
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+
+    <insert id="save" parameterType="com.platform.entity.CommondityEntity">
+        insert into nideshop_commondity(
+        `id`,
+        `name`,
+        `classing`,
+        `classing1`,
+        `classing2`,
+        `frontdesc`,
+        `model`,
+        `specification`,
+        `price`,
+        `taxprice`,
+        `username`,
+        `imgurl`,
+        `goodstyle`)
+        values(
+        #{id},
+        #{name},
+        #{classing},
+        #{classing1},
+        #{classing2},
+        #{frontdesc},
+        #{model},
+        #{specification},
+        #{price},
+        #{taxprice},
+        #{username},
+        #{imgurl},
+        #{goodstyle})
+    </insert>
+
+    <update id="update" parameterType="com.platform.entity.CommondityEntity">
+        update nideshop_commondity
+        <set>
+            <if test="name != null">`name` = #{name}, </if>
+            <if test="classing != null">`classing` = #{classing}, </if>
+            <if test="classing1 != null">`classing1` = #{classing1}, </if>
+            <if test="classing2 != null">`classing2` = #{classing2}, </if>
+            <if test="frontdesc != null">`frontdesc` = #{frontdesc}, </if>
+            <if test="model != null">`model` = #{model}, </if>
+            <if test="specification != null">`specification` = #{specification}, </if>
+            <if test="price != null">`price` = #{price}, </if>
+            <if test="taxprice != null">`taxprice` = #{taxprice}, </if>
+            <if test="username != null">`username` = #{username}, </if>
+            <if test="imgurl != null">`imgurl` = #{imgurl}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete from nideshop_commondity where id = #{value}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from nideshop_commondity where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

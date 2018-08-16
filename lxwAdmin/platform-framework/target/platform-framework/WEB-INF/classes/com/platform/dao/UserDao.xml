@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.UserDao">
+
+    <resultMap type="com.platform.entity.UserEntity" id="userMap">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="gender" column="gender"/>
+        <result property="birthday" column="birthday"/>
+        <result property="registerTime" column="register_time"/>
+        <result property="lastLoginTime" column="last_login_time"/>
+        <result property="lastLoginIp" column="last_login_ip"/>
+        <result property="userLevelId" column="user_level_id"/>
+        <result property="nickname" column="nickname"/>
+        <result property="mobile" column="mobile"/>
+        <result property="registerIp" column="register_ip"/>
+        <result property="avatar" column="avatar"/>
+        <result property="weixinOpenid" column="weixin_openid"/>
+        <result property="accomplishTime" column="accomplish_time"/>
+        <result property="clientName" column="client_name"/>
+        <result property="clearingForm" column="clearing_form"/>
+        <result property="area" column="area"/>
+        <result property="city" column="city"/>
+        <result property="principal" column="principal"/>
+        <result property="email" column="email"/>
+        <result property="financePrincipal" column="finance_principal"/>
+        <result property="financeEmail" column="finance_email"/>
+        <result property="financeMobile" column="finance_mobile"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="address" column="address"/>
+        <result property="province" column="province"/>
+        <result property="region" column="region"/>
+        <result property="town" column="town"/>
+        <result property="custaddress" column="custaddress"/>
+
+        <association property="RegisterEntity" column="com.platform.entity.RegisterEntity">
+            <result property="peopleName" column="people_name"/>
+            <result property="contactMobile" column="contact_mobile"/>
+            <result property="mangeName" column="mange_name"/>
+        </association>
+    </resultMap>
+
+    <select id="queryObject" resultType="com.platform.entity.UserEntity">
+		select
+			t1.id,
+			t1.custnumber,
+			t1.username,
+			t1.password,
+			t1.gender,
+			t1.birthday,
+			t1.register_time,
+			t1.last_login_time,
+			t1.last_login_ip,
+			t1.user_level_id,
+			t1.nickname,
+			t1.mobile,
+			t1.register_ip,
+			t1.avatar,
+			t1.weixin_openid,
+			t1.client_name,
+			t1.clearing_form,
+			t1.area,
+			t1.city,
+			t1.principal,
+			t1.email,
+			t1.finance_principal,
+			t1.finance_email,
+			t1.finance_mobile,
+			t1.address,
+			t1.province,
+			t1.town,
+			t1.region,
+			t1.phone_number,
+			t1.accomplish_time,
+			t1.custaddress
+			from nideshop_user t1
+		where t1.id = #{id}
+	</select>
+
+
+    <select id="queryObjects" resultType="com.platform.entity.UserEntity">
+        select
+        t1.id,
+        t1.custnumber,
+        t1.username,
+        t1.password,
+        t1.gender,
+        t1.birthday,
+        t1.register_time,
+        t1.last_login_time,
+        t1.last_login_ip,
+        t1.user_level_id,
+        t1.nickname,
+        t1.mobile,
+        t1.register_ip,
+        t1.avatar,
+        t1.weixin_openid,
+        t1.client_name,
+        t1.clearing_form,
+        t1.area,
+        t1.city,
+        t1.principal,
+        t1.email,
+        t1.finance_principal,
+        t1.finance_email,
+        t1.finance_mobile,
+        t1.address,
+        t1.province,
+        t1.town,
+        t1.region,
+        t1.phone_number,
+        t1.accomplish_time,
+        t1.custaddress,
+        t2.contact_mobile,
+        t2.mange_name,
+        t2.people_name
+        from nideshop_user t1,nideshop_register t2
+        where t1.id = #{id} AND t1.phone_number=t2.contact_mobile
+    </select>
+
+
+    <select id="selectMobile" resultType="com.platform.entity.UserEntity">
+        select
+        mobile
+       from nideshop_user
+   </select>
+
+    <select id="selectId" resultType="Integer">
+        select
+        id
+        from nideshop_user
+        where mobile=#{mobile}
+    </select>
+
+    <select id="queryList" resultType="com.platform.entity.UserEntity">
+        select
+        nideshop_user.id,
+        nideshop_user.custnumber,
+        nideshop_user.username,
+        nideshop_user.password,
+        nideshop_user.gender,
+        nideshop_user.birthday,
+        nideshop_user.register_time,
+        nideshop_user.last_login_time,
+        nideshop_user.last_login_ip,
+        nideshop_user.user_level_id,
+        nideshop_user.nickname,
+        nideshop_user.mobile,
+        nideshop_user.register_ip,
+        nideshop_user.avatar,
+        nideshop_user.weixin_openid,
+        nideshop_user.client_name,
+        nideshop_user.clearing_form,
+        nideshop_user.area,
+        nideshop_user.city,
+        nideshop_user.principal,
+        nideshop_user.email,
+        nideshop_user.finance_principal,
+        nideshop_user.finance_email,
+        nideshop_user.finance_mobile,
+        nideshop_user.accomplish_time,
+        nideshop_user.address,
+        nideshop_user.province,
+        nideshop_user.town,
+        nideshop_user.phone_number,
+        nideshop_user.region,
+        nideshop_user.custaddress
+        from nideshop_user
+        WHERE 1=1
+        <if test="username != null and username.trim() != ''">
+            and username like concat('%',#{username},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from nideshop_user
+        WHERE 1=1
+        <if test="username != null and username.trim() != ''">
+            and username like concat('%',#{username},'%')
+        </if>
+    </select>
+
+    <insert id="save" parameterType="com.platform.entity.UserEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into nideshop_user(
+		     `custnumber`,
+			`username`,
+			`password`,
+			`gender`,
+			`birthday`,
+			`register_time`,
+			`last_login_time`,
+			`last_login_ip`,
+			`user_level_id`,
+			`nickname`,
+			`mobile`,
+			`register_ip`,
+			`avatar`,
+			`weixin_openid`,
+             `accomplish_time`,
+			`client_name`,
+			`clearing_form`,
+			`area`,
+			`city`,
+			`principal`,
+			`email`,
+			`finance_principal`,
+			`finance_email`,
+			`finance_mobile`,
+			`address`,
+			`province`,
+			`town`,
+			`region`,
+			`custaddress`,
+			`phone_number`)
+		values(
+		    #{custnumber},
+			#{username},
+			#{password},
+			#{gender},
+			#{birthday},
+			#{registerTime},
+			#{lastLoginTime},
+			#{lastLoginIp},
+			#{userLevelId},
+			#{nickname},
+			#{mobile},
+			#{registerIp},
+			#{avatar},
+			#{weixinOpenid},
+			#{accomplishTime},
+			#{clientName},
+			#{clearingForm},
+			#{area},
+			#{city},
+			#{principal},
+			#{email},
+			#{financePrincipal},
+			#{financeEmail},
+			#{financeMobile},
+
+			#{address},
+			#{province},
+			#{town},
+			#{region},
+			#{custaddress},
+			#{phoneNumber})
+	</insert>
+
+    <update id="update" parameterType="com.platform.entity.UserEntity">
+        update nideshop_user
+        <set>
+            <if test="username != null">`username` = #{username},</if>
+            <if test="password != null">`password` = #{password},</if>
+            <if test="gender != null">`gender` = #{gender},</if>
+            <if test="birthday != null">`birthday` = #{birthday},</if>
+            <if test="registerTime != null">`register_time` = #{registerTime},</if>
+            <if test="lastLoginTime != null">`last_login_time` = #{lastLoginTime},</if>
+            <if test="lastLoginIp != null">`last_login_ip` = #{lastLoginIp},</if>
+            <if test="userLevelId != null">`user_level_id` = #{userLevelId},</if>
+            <if test="nickname != null">`nickname` = #{nickname},</if>
+            <if test="mobile != null">`mobile` = #{mobile},</if>
+            <if test="registerIp != null">`register_ip` = #{registerIp},</if>
+            <if test="avatar != null">`avatar` = #{avatar},</if>
+            <if test="weixinOpenid != null">`weixin_openid` = #{weixinOpenid},</if>
+            <if test="clientName != null">`client_name` = #{clientName}, </if>
+            <if test="clearingForm != null">`clearing_form` = #{clearingForm}, </if>
+            <if test="area != null">`area` = #{area}, </if>
+            <if test="city != null">`city` = #{city}, </if>
+            <if test="principal != null">`principal` = #{principal}, </if>
+            <if test="email != null">`email` = #{email}, </if>
+            <if test="financePrincipal != null">`finance_principal` = #{financePrincipal}, </if>
+            <if test="financeEmail != null">`finance_email` = #{financeEmail}, </if>
+            <if test="accomplishTime != null">`accomplish_time` = #{accomplishTime}, </if>
+            <if test="financeMobile != null">`finance_mobile` = #{financeMobile}, </if>
+            <if test="phoneNumber != null">`phone_number` = #{phoneNumber}, </if>
+            <if test="province != null">`province` = #{province}, </if>
+            <if test="town != null">`town` = #{town}, </if>
+            <if test="region != null">`region` = #{region}, </if>
+            <if test="custaddress != null">`custaddress` = #{custaddress}, </if>
+            <if test="address != null">`address` = #{address}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updating" parameterType="com.platform.entity.UserEntity">
+        update nideshop_user
+        <set>
+            <if test="username != null">`username` = #{username},</if>
+            <if test="password != null">`password` = #{password},</if>
+            <if test="gender != null">`gender` = #{gender},</if>
+            <if test="birthday != null">`birthday` = #{birthday},</if>
+            <if test="registerTime != null">`register_time` = #{registerTime},</if>
+            <if test="lastLoginTime != null">`last_login_time` = #{lastLoginTime},</if>
+            <if test="lastLoginIp != null">`last_login_ip` = #{lastLoginIp},</if>
+            <if test="userLevelId != null">`user_level_id` = #{userLevelId},</if>
+            <if test="nickname != null">`nickname` = #{nickname},</if>
+            <if test="registerIp != null">`register_ip` = #{registerIp},</if>
+            <if test="avatar != null">`avatar` = #{avatar},</if>
+            <if test="weixinOpenid != null">`weixin_openid` = #{weixinOpenid},</if>
+            <if test="clientName != null">`client_name` = #{clientName}, </if>
+            <if test="clearingForm != null">`clearing_form` = #{clearingForm}, </if>
+            <if test="area != null">`area` = #{area}, </if>
+            <if test="city != null">`city` = #{city}, </if>
+            <if test="principal != null">`principal` = #{principal}, </if>
+            <if test="email != null">`email` = #{email}, </if>
+            <if test="financePrincipal != null">`finance_principal` = #{financePrincipal}, </if>
+            <if test="financeEmail != null">`finance_email` = #{financeEmail}, </if>
+            <if test="financeMobile != null">`finance_mobile` = #{financeMobile}, </if>
+            <if test="mobile != null">`mobile` = #{mobile}, </if>
+            <if test="accomplishTime != null">`accomplish_time` = #{accomplishTime}, </if>
+            <if test="phoneNumber != null">`phone_number` = #{phoneNumber}, </if>
+            <if test="province != null">`province` = #{province}, </if>
+            <if test="town != null">`town` = #{town}, </if>
+            <if test="region != null">`region` = #{region}, </if>
+            <if test="custaddress != null">`custaddress` = #{custaddress}, </if>
+            <if test="address != null">`address` = #{address}</if>
+        </set>
+        where moblie = #{mobile}
+    </update>
+
+
+
+    <delete id="delete">
+		delete from nideshop_user where id = #{value}
+	</delete>
+
+    <delete id="deleteBatch">
+        delete from nideshop_user where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <delete id="deleteing">
+        delete from nideshop_user where phone_number = #{phoneNnmber}
+    </delete>
+</mapper>

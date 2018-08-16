@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    #parse("sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+        <Row :gutter="16">
+            <i-col span="4">
+                <i-input v-model="q.user" @on-enter="query" placeholder="企业用户"/>
+            </i-col>
+            <i-button @click="query">查询</i-button>
+			#if($shiro.hasPermission("payment:save"))
+            <i-button type="info" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</i-button>
+			#end
+			#if($shiro.hasPermission("payment:update"))
+            <i-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</i-button>
+			#end
+			#if($shiro.hasPermission("payment:delete"))
+            <i-button type="error" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
+			#end
+        </Row>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+
+    <Card v-show="!showList">
+        <p slot="title">{{title}}</p>
+		<i-form ref="formValidate" :model="payment" :rules="ruleValidate" :label-width="80">
+            <Form-item label="账期" prop="payment">
+                <i-input v-model="payment.payment" placeholder="账期"/>
+            </Form-item>
+            <Form-item label="回款时间" prop="callbackTime">
+                <i-input type=date v-model="payment.callbackTime" placeholder="回款时间"/>
+            </Form-item>
+            <Form-item label="回款金额" prop="money">
+                <i-input v-model="payment.money" placeholder="回款金额"/>
+            </Form-item>
+           <!-- <Form-item label="订单号" prop="orderSn">
+                <i-input v-model="payment.orderSn" placeholder="订单号"/>
+            </Form-item>-->
+            <Form-item label="计费类型" prop="moneyType">
+                <i-input v-model="payment.moneyType" placeholder="计费类型"/>
+            </Form-item>
+
+            <Row>
+                <i-col span="16">
+                    <Form-item label="回款图片" prop="link">
+                        <i-input v-model="payment.link" placeholder="商品图片" readonly/>
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <Upload style="width: 300px;" action="../sys/oss/upload" :format="['jpg','jpeg','png']"
+                                max-size="2048"
+                                :on-success="handleSuccessPicUrl" :on-format-error="handleFormatError"
+                                :show-upload-list="false"
+                                :on-exceeded-size="handleMaxSize">
+                            <i-button icon="ios-cloud-upload-outline">上传图片</i-button>
+                        </Upload>
+                    </Form-item>
+                </i-col>
+
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <i-button icon="eye" @click="eyeImageUrl">预览图片</i-button>
+                    </Form-item>
+                </i-col>
+            </Row>
+
+
+
+            <Form-item label="企业用户" prop="user">
+                <i-input v-model="payment.user" placeholder="用户"/>
+            </Form-item>
+           <!-- <Form-item label="账单编号" prop="billNumber">
+                <i-input v-model="payment.billNumber" placeholder="账单编号"/>
+            </Form-item>-->
+            <Form-item>
+                <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
+                <i-button type="warning" @click="reload" style="margin-left: 8px"/>返回</i-button>
+                <i-button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">重置</i-button>
+            </Form-item>
+        </i-form>
+	</Card>
+</div>
+
+<script src="${rc.contextPath}/js/shop/payment.js?_${date.systemTime}"></script>
+</body>
+</html>

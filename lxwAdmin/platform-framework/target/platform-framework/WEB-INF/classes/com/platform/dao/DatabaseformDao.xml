@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.DatabaseformDao">
+
+    <resultMap type="com.platform.entity.DatabaseformEntity" id="databaseformMap">
+        <result property="id" column="id"/>
+        <result property="minTime" column="min_time"/>
+        <result property="maxTime" column="max_time"/>
+        <result property="simble" column="simble"/>
+        <result property="year" column="year"/>
+        <result property="month" column="month"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.DatabaseformEntity">
+		select
+			`id`,
+			`min_time`,
+			`max_time`,
+			`simble`,
+			`year`,
+			`month`
+		from nideshop_databaseform
+		where id = #{id}
+	</select>
+
+	<select id="select" parameterType="Integer" resultType="String">
+		select
+	    simble
+		from nideshop_databaseform
+		where 1=1
+			<if test="maxTime!= null">
+				max_time &lt;= #{maxTime} AND min_time &gt;= #{maxTime}
+			</if>
+	</select>
+
+
+	<select id="queryList" resultType="com.platform.entity.DatabaseformEntity">
+		select
+    		`id`,
+    		`min_time`,
+    		`max_time`,
+    		`simble`,
+    		`year`,
+    		`month`
+		from nideshop_databaseform
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from nideshop_databaseform
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.DatabaseformEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into nideshop_databaseform(
+			`min_time`,
+			`max_time`,
+			`simble`,
+			`year`,
+			`month`)
+		values(
+			#{minTime},
+			#{maxTime},
+			#{simble},
+			#{year},
+			#{month})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.DatabaseformEntity">
+		update nideshop_databaseform 
+		<set>
+			<if test="minTime != null">`min_time` = #{minTime}, </if>
+			<if test="maxTime != null">`max_time` = #{maxTime}, </if>
+			<if test="simble != null">`simble` = #{simble}, </if>
+			<if test="year != null">`year` = #{year}, </if>
+			<if test="month != null">`month` = #{month}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from nideshop_databaseform where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from nideshop_databaseform where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
