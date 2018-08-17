@@ -53,7 +53,7 @@ $(function () {
           /*  {label: '商品名称', name: 'commodityName', index: 'commodity_name', width: 80},*/
             {label: '售卖单价', name: 'unitPrice', index: 'unit_price', width: 80,hidden:true},
             {label: '单价(含税)', name: 'nunitPrice', index: 'nunit_price', width: 80},
-            {label: '数量', name: 'quantity', index: 'quantity', width: 80},
+            {label: '数量', name: 'integral', index: 'integral', width: 80},
             {label: '客户', name: 'clientName', index: 'client_name', width: 80},
             {
                 label: '下单时间', name: 'addTime', index: 'add_time', width: 80,
@@ -67,7 +67,7 @@ $(function () {
                    }
                 },
             {label: '完成时间', name: 'creatingTime', index: 'creating_time', width: 80},
-            {label: '订单金额', name: 'generalBudget', index: 'general_budget', width: 80},
+            {label: '订单金额', name: 'goodsPrice', index: 'goods_price', width: 80 },
             {label: '物流方式', name: 'modeDistribution', index: 'mode_distribution', width: 80,
                 formatter: function (value) {
                     if (value == '1') {

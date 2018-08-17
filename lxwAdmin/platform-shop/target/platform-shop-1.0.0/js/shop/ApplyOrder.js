@@ -121,6 +121,7 @@ let vm = new Vue({
         title: null,
         order: {},
         shippings: [],
+        integral:'',
         goodsTypeCoco: [],
         modelvList: [],
         modelbList: [],
@@ -132,11 +133,18 @@ let vm = new Vue({
         username:'order.username',
         q: {
             orderSn: '',
-            orderStatus: ''
+            orderStatus: '',
+            integral:''
         },
         ruleValidates:{
             time: [
                 {required: true, message: '时间不能为空', trigger: 'blur'}
+            ],
+            integral: [
+                {required: true, message: '数量不能为空,若客户未填写数量，此处需要填写数量，若客户已填写数量，并且此处已显示，不可更改，若更改忘记数量，可刷新网页', trigger: 'blur'}
+            ],
+            goodsPrice: [
+                {required: true, message: '价格不能为空', trigger: 'blur'}
             ],
         },
     },
@@ -269,22 +277,37 @@ let vm = new Vue({
             });
         },
         saveOrUpdate: function (event) {
-            var url ="../order/sendGoods";
-            $.ajax({
-                type: "POST",
-                url: url,
-                contentType: "application/json",
-                data: JSON.stringify(vm.order),
-                success: function (r) {
-                    if (r.code === 0) {
-                        alert('操作成功', function (index) {
-                            vm.reload();
-                        });
-                    } else {
-                        alert(r.msg);
-                    }
+            var id = getSelectedRow();
+            if (id == null) {
+                return;
+            }
+            var sos=vm.order.integral;
+            var oso=vm.order.goodsPrice;
+            $.get("../order/info/"+id, function (r) {
+                vm.orders = r.order;
+                var integral=r.order.integral;
+                var goodsPrice=r.order.goodsPrice;
+                if(sos==integral &&oso==goodsPrice){
+                    var url ="../order/sendGoods";
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        contentType: "application/json",
+                        data: JSON.stringify(vm.order),
+                        success: function (r) {
+                            if (r.code === 0) {
+                                alert('操作成功', function (index) {
+                                    vm.reload();
+                                });
+                            } else {
+                                alert(r.msg);
+                            }
+                        }
+                    });
+                }else {
+                    alert('请勿修改数量或总预算！如果原始数据已忘记，请刷新网页');
                 }
-            });
+                });
         },
         reload: function (event) {
             vm.showList = true;
@@ -296,7 +319,8 @@ let vm = new Vue({
                     'orderSn': vm.q.orderSn,
                     'orderStatus': vm.q.orderStatus,
                     'confirmStatus':vm.q.confirmStatus,
-                    'orderNo':vm.q.orderNo
+                    'orderNo':vm.q.orderNo,
+                    'integral':vm.q.integral
                 },
                 page: page
             }).trigger("reloadGrid");

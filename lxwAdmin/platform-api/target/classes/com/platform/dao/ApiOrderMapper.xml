@@ -40,6 +40,7 @@
         <result property="coupon_price" column="coupon_price"/>
         <result property="callback_status" column="callback_status"/>
         <result property="full_cut_price" column="full_cut_price"/>
+        <result property="confirm_status" column="confirm_status"/>
     </resultMap>
 
     <select id="queryObject" resultMap="orderMap">
@@ -107,7 +108,8 @@
 			`parent_id`,
 			`coupon_price`,
 			`callback_status`,
-			`full_cut_price`
+			`full_cut_price`,
+			`confirm_status`
 		)
 		values
 		(
@@ -142,7 +144,8 @@
 			#{parent_id},
 			#{coupon_price},
 			#{callback_status},
-			#{full_cut_price}
+			#{full_cut_price},
+			#{confirm_status}
 		)
 	</insert>
 
@@ -179,8 +182,10 @@
             <if test="coupon_id != null">`coupon_id` = #{coupon_id},</if>
             <if test="parent_id != null">`parent_id` = #{parent_id},</if>
             <if test="coupon_price != null">`coupon_price` = #{coupon_price},</if>
-            <if test="callback_status != null">`callback_status` = #{callback_status}</if>
-            <if test="full_cut_price != null">`full_cut_price` = #{full_cut_price},</if>
+            <if test="callback_status != null">`callback_status` = #{callback_status},</if>
+            <if test="order_no != null">`order_no` = #{order_no},</if>
+            <if test="confirm_status != null">`confirm_status` = #{confirm_status},</if>
+            <if test="full_cut_price != null">`full_cut_price` = #{full_cut_price}</if>
         </set>
         where id = #{id}
     </update>

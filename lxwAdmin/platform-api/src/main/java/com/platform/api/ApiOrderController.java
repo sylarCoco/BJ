@@ -20,10 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 作者: @author Harmon <br>
@@ -145,10 +143,8 @@ public class ApiOrderController extends ApiBaseAction {
     public Object cancelOrder(@LoginUser UserVo loginUser, Integer orderId) {
         try {
             OrderVo orderVo = orderService.queryObject(orderId);
-            if (orderVo.getOrder_status() == 300) {
-                return toResponsFail("已发货，不能取消");
-            } else if (orderVo.getOrder_status() == 301) {
-                return toResponsFail("已收货，不能取消");
+            if (orderVo.getConfirm_status() .equals(501)) {
+                return toResponsFail("订单已生成，不能取消，若想取消请通知客服人员");
             }
             // 需要退款
             if (orderVo.getPay_status() == 2) {
@@ -166,8 +162,14 @@ public class ApiOrderController extends ApiBaseAction {
                 } else {
                     return toResponsObject(400, "取消成失败", "");
                 }
-            } else {
+            } else if(orderVo.getConfirm_status().equals("502")) {
                 orderVo.setOrder_status(101);
+                Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
+                SimpleDateFormat s = new SimpleDateFormat("yyyymmddHHmmss");
+                Date b = calendar.getTime();
+                String custnumber = "CG" + s.format(b);
+                orderVo.setOrder_no(custnumber);
+                orderVo.setConfirm_status("501");
                 orderService.update(orderVo);
                 return toResponsSuccess("取消成功");
             }

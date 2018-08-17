@@ -20,6 +20,14 @@ public class OrderVo implements Serializable {
 
     //主键
     private Integer id;
+
+
+    private String confirm_status;
+
+    private String order_no;
+
+
+
     //订单序列号
     private String order_sn;
     //会员Id
@@ -99,6 +107,22 @@ public class OrderVo implements Serializable {
     private BigDecimal full_cut_price; //订单满减
     private String full_region;//区县
 
+    public String getOrder_no() {
+        return order_no;
+    }
+
+    public void setOrder_no(String order_no) {
+        this.order_no = order_no;
+    }
+
+
+    public String getConfirm_status() {
+        return confirm_status;
+    }
+
+    public void setConfirm_status(String confirm_status) {
+        this.confirm_status = confirm_status;
+    }
     public String getFull_region() {
     //    return full_region;
         if (StringUtils.isNotEmpty(this.full_region)){

@@ -239,6 +239,9 @@ public class OrderServiceImpl implements OrderService {
     public int update(OrderEntity order) {
         BillnewEntity billnewEntity=new BillnewEntity();
         OrderEntity orderEntity=orderDao.queryObject(order.getId());
+        if(orderEntity==null){
+            return 3;
+        }
         if( orderEntity.getOrderStatus().equals(300) || orderEntity.getOrderStatus().equals(402)) {
             if (order.getOrderStatus().equals(101)) {
                 if(orderEntity.getOrderStatus().equals(402)){

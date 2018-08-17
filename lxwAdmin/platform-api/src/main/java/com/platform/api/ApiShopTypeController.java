@@ -10,6 +10,7 @@ import com.platform.service.ApiOrderService;
 import com.platform.service.ApiUserService;
 import com.platform.util.ApiBaseAction;
 import com.platform.util.CommonUtil;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,9 +54,18 @@ public class ApiShopTypeController extends ApiBaseAction {
         orderInfo.setShipping_name(shopTypeVo.getShopName());
         orderInfo.setUser_id(loginUser.getUserId());
         orderInfo.setMobile(shopTypeVo.getMobile());
-        orderInfo.setIntegral(Integer.valueOf(shopTypeVo.getIntegral()));
-        orderInfo.setGoods_price(orderTotalPrice);
+        if(shopTypeVo.getIntegral()==null){
+            orderInfo.setIntegral(0);
+        }else {
+            orderInfo.setIntegral(Integer.valueOf(shopTypeVo.getIntegral()));
+        }
+        if(shopTypeVo.getGoodsPrice()==null){
+            orderInfo.setGoods_price(BigDecimal.valueOf(0));
+        }else {
+            orderInfo.setGoods_price(orderTotalPrice);
+        }
         orderInfo.setOrder_status(0);
+        orderInfo.setConfirm_status("502");
         orderInfo.setAdd_time(new Date());
         // 待付款
         orderInfo.setOrder_status(0);

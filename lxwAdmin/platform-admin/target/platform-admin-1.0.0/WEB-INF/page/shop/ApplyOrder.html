@@ -111,11 +111,11 @@
             <Form-item label="含税售卖单价" prop="nunitPrice">
                 <i-input v-model="order.nunitPrice" placeholder="含税售卖单价"/>
             </Form-item>
-            <Form-item label="数量" prop="quantity">
-                <i-input v-model="order.quantity" placeholder="数量"/>
+            <Form-item label="数量" prop="integral">
+                <i-input v-model="order.integral" placeholder="数量"/>
             </Form-item>
-            <Form-item label="总预算" prop="generalBudget">
-                <i-input v-model="order.generalBudget" placeholder="总预算"/>
+            <Form-item label="总预算" prop="goodsPrice">
+                <i-input v-model="order.goodsPrice" placeholder="总预算"/>
             </Form-item>
             <h3 style="text-align: center;">配送信息</h3>
             <br>
@@ -236,11 +236,11 @@
                 <Form-item label="含税单价" prop="nunitPrice">
                     <i-input v-model="order.nunitPrice" placeholder="含税售卖单价" readonly/>
                 </Form-item>
-                <Form-item label="数量" prop="quantity">
-                    <i-input v-model="order.quantity" placeholder="数量" readonly/>
+                <Form-item label="数量" prop="integral">
+                    <i-input v-model="order.integral" placeholder="数量" readonly/>
                 </Form-item>
-                <Form-item label="总预算" prop="generalBudget">
-                    <i-input v-model="order.generalBudget" placeholder="总预算" readonly/>
+                <Form-item label="总预算" prop="goodsPrice">
+                    <i-input v-model="order.goodsPrice" placeholder="总预算" readonly/>
                 </Form-item>
                 <Form-item label="配送方式" prop="modeDistribution" style="width: 268px;" readonly>
                     <Radio-group v-model="order.modeDistribution">
