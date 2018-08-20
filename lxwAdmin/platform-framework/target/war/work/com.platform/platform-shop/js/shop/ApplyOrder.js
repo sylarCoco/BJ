@@ -277,37 +277,22 @@ let vm = new Vue({
             });
         },
         saveOrUpdate: function (event) {
-            var id = getSelectedRow();
-            if (id == null) {
-                return;
-            }
-            var sos=vm.order.integral;
-            var oso=vm.order.goodsPrice;
-            $.get("../order/info/"+id, function (r) {
-                vm.orders = r.order;
-                var integral=r.order.integral;
-                var goodsPrice=r.order.goodsPrice;
-                if(sos==integral &&oso==goodsPrice){
-                    var url ="../order/sendGoods";
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        contentType: "application/json",
-                        data: JSON.stringify(vm.order),
-                        success: function (r) {
-                            if (r.code === 0) {
-                                alert('操作成功', function (index) {
-                                    vm.reload();
-                                });
-                            } else {
-                                alert(r.msg);
-                            }
-                        }
-                    });
-                }else {
-                    alert('请勿修改数量或总预算！如果原始数据已忘记，请刷新网页');
+            var url = "../order/sendGoods";
+            $.ajax({
+                type: "POST",
+                url: url,
+                contentType: "application/json",
+                data: JSON.stringify(vm.order),
+                success: function (r) {
+                    if (r.code === 0) {
+                        alert('操作成功', function (index) {
+                            vm.reload();
+                        });
+                    } else {
+                        alert(r.msg);
+                    }
                 }
-                });
+            });
         },
         reload: function (event) {
             vm.showList = true;
